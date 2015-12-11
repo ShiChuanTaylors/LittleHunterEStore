@@ -1,7 +1,7 @@
 package cart;
 
 import java.util.*;
-import database.BookDetails;
+import database.ShirtDetails;
 
 public class ShoppingCart {
 
@@ -15,7 +15,7 @@ public class ShoppingCart {
         //this.transactionDate = new DateClient().getRMIdate();
     }
 
-    public synchronized void add(String bookId, BookDetails book) {
+    public synchronized void add(String bookId, ShirtDetails book) {
         if (items.containsKey(bookId)) {
             ShoppingCartItem scitem = (ShoppingCartItem) items.get(bookId);
             scitem.incrementQuantity();
@@ -61,8 +61,8 @@ public class ShoppingCart {
         double amount = 0.0;
         for (Iterator i = getItems().iterator(); i.hasNext();) {
             ShoppingCartItem item = (ShoppingCartItem) i.next();
-            BookDetails bookDetails = (BookDetails) item.getItem();
-            amount += (item.getQuantity() * bookDetails.getPrice());
+            ShirtDetails ShirtDetails = (ShirtDetails) item.getItem();
+            amount += (item.getQuantity() * ShirtDetails.getPrice());
         }
         return roundOff(amount);
     }

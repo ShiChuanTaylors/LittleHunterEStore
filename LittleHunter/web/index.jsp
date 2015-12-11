@@ -1,5 +1,5 @@
 <%--
-	response.sendRedirect("/Bookstore");
+	response.sendRedirect("/ShirtStore");
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -27,13 +27,13 @@
 <body>
   <nav class="white" role="navigation">
     <div class="nav-wrapper container">
-        <img src="images/logo_lh.png" style="width:18%;" alt="Little Hunter"/>
+        <img src="images/logo_lh.png" style="height:90%; padding:3px;" alt="Little Hunter"/>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Navbar Link</a></li>
+        <li><a href="./Admin">Admin</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
-        <li><a href="#">Menu</a></li>
+        <li><a href="./Admin">Admin</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
@@ -48,7 +48,7 @@
           <h5 class="header col s12 light">Where the T-shirt speaks</h5>
         </div>
         <div class="row center">
-          <a href="./BookCatalog" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
+          <a href="./ShirtCatalog" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
         </div>
         <br><br>
 
@@ -174,6 +174,6 @@
         <title>Amazon.COM Welcome Page</title>
     </head>
     <body>
-        <h2><a href="./Bookstore">Have Fun!</a></h2>
+        <h2><a href="./ShirtStore">Have Fun!</a></h2>
     </body>
 </html-->

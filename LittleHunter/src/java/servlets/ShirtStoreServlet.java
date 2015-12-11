@@ -5,15 +5,15 @@ import javax.servlet.http.*;
 import database.*;
 import exception.*;
 
-public class BookStoreServlet extends HttpServlet {
-    private BookDBAO bookDB;
+public class ShirtStoreServlet extends HttpServlet {
+    private ShirtDBAO shirtDB;
     @Override
     public void init() throws ServletException {
-        bookDB = (BookDBAO) getServletContext().getAttribute("bookDB");
-        if (bookDB == null) throw new UnavailableException("Couldn't get database.");
+        shirtDB = (ShirtDBAO) getServletContext().getAttribute("shirtDB");
+        if (shirtDB == null) throw new UnavailableException("Couldn't get database.");
     }
     @Override
-    public void destroy() { bookDB = null; }
+    public void destroy() { shirtDB = null; }
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException{
@@ -25,12 +25,12 @@ public class BookStoreServlet extends HttpServlet {
         out.println(BannerServlet.htmlHeader);
         getServletContext().getRequestDispatcher("/Banner").include(request, response);
         try {
-            String bookOfTheDayID="101";
-            bookDB = (BookDBAO) getServletContext().getAttribute("bookDB");            
-            BookDetails bd = bookDB.getBookDetails(bookOfTheDayID);
+            String bookOfTheDayID="1";
+            shirtDB = (ShirtDBAO) getServletContext().getAttribute("shirtDB");            
+            ShirtDetails bd = shirtDB.getShirtDetails(bookOfTheDayID);
             out.println("<b>Book of the day</b>:<a href='" +
-                response.encodeURL(contextPath+"/BookDetails?Id="+bookOfTheDayID+"'>") + 
-                bd.getShirtName() +"</a><p><a href=\'" +response.encodeURL(contextPath+ "/BookCatalog") +
+                response.encodeURL(contextPath+"/ShirtDetails?Id="+bookOfTheDayID+"'>") + 
+                bd.getShirtName() +"</a><p><a href=\'" +response.encodeURL(contextPath+ "/ShirtCatalog") +
                 "'><b>Start Shopping</b></a></font><br/>");
         } catch (BookNotFoundException ex) {
              out.println("<center><h1>"+ex.getMessage()+"</h1></center>");
@@ -41,5 +41,5 @@ public class BookStoreServlet extends HttpServlet {
        }
     }
     @Override
-    public String getServletInfo() {return "The Amazon.COM BookStore Main Servlet";}
+    public String getServletInfo() {return "The Amazon.COM ShirtStore Main Servlet";}
 }

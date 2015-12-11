@@ -8,14 +8,14 @@ import cart.*;
 import exception.*;
 
 public class AdminUpdateServlet extends HttpServlet {
-    private BookDBAO bookDB;
+    private ShirtDBAO shirtDB;
     @Override
     public void init() throws ServletException {
-        bookDB = (BookDBAO) getServletContext().getAttribute("bookDB");
-        if (bookDB == null) throw new UnavailableException("Couldn't get database.");
+        shirtDB = (ShirtDBAO) getServletContext().getAttribute("shirtDB");
+        if (shirtDB == null) throw new UnavailableException("Couldn't get database.");
     }
     @Override
-    public void destroy() {bookDB = null;}
+    public void destroy() {shirtDB = null;}
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -27,14 +27,14 @@ public class AdminUpdateServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         out.println(BannerServlet.htmlHeader);
         getServletContext().getRequestDispatcher("/Banner").include(request, response);
-        String bookId = request.getParameter("Id");
-        if (bookId != null) {
+        String shirtId = request.getParameter("Id");
+        if (shirtId != null) {
             try {
-                if(bookDB.deleteBook(bookId))
-                  out.println("<p><h3><font color='red'>You updated Book with ID=<i>" + bookId +
+                if(shirtDB.deleteBook(shirtId))
+                  out.println("<p><h3><font color='red'>You updated Shirt with ID=<i>" + shirtId +
                           "</i></font></h3>");
                 else
-                  out.println("<p><h3><font color='red'>Cannot update Book with ID=<i>" + bookId +
+                  out.println("<p><h3><font color='red'>Cannot update Shirt with ID=<i>" + shirtId +
                           "</i></font></h3>");                      
             } catch (BookNotFoundException ex) {
                 response.reset();
@@ -44,23 +44,23 @@ public class AdminUpdateServlet extends HttpServlet {
         //Give the option of checking cart or checking out if cart not empty
         if (cart.getNumberOfItems() > 0) {
             out.println("<p><strong><a href='" +
-                response.encodeURL(contextPath+ "/BookShowCart") +
+                response.encodeURL(contextPath+ "/ShirtShowCart") +
                 "'>Check Shopping Cart</a>&nbsp;&nbsp;&nbsp;<a href='" +
-                response.encodeURL(contextPath+ "/BookCashier")+"'>Buy Your Books</a></p></strong>");
+                response.encodeURL(contextPath+ "/ShirtCashier")+"'>Buy Your Books</a></p></strong>");
         }
         // Always prompt the user to buy more -- get and show the catalog
-        out.println("<h3>Please choose book to update:</h3><center><table class=\"striped\" summary='layout'>");
+        out.println("<h3>Please choose shirt to update:</h3><center><table class=\"striped\" summary='layout'>");
         try {
-            Collection coll = bookDB.getBooks();
+            Collection coll = shirtDB.getBooks();
             Iterator i = coll.iterator();
             while (i.hasNext()) {
-                BookDetails book = (BookDetails) i.next();
-                bookId = book.getId();
+                ShirtDetails book = (ShirtDetails) i.next();
+                shirtId = book.getId();
                 //Print out info on each book in its own two rows
                 out.println("<tr><td bgcolor='#ffffaa'><strong>"+book.getShirtName()+"&nbsp;</strong></td>" +
                     "<td bgcolor='#ffffaa' rowspan='2'>MYR&nbsp;"+ book.getPrice() +
                     "&nbsp; </td><td bgcolor='#ffffaa' rowspan='2'><a href='" +
-                    response.encodeURL(contextPath+"/AdminBookEntry?Mode=Update&ID=" + bookId) + 
+                    response.encodeURL(contextPath+"/AdminBookEntry?Mode=Update&ID=" + shirtId) + 
                     "'> &nbsp;Update&nbsp;</a></td></tr>" +
                     "<tr><td bgcolor='white'>&nbsp; &nbsp;&nbsp;<em>" + book.getDescription()+"</em></td></tr>");
             }

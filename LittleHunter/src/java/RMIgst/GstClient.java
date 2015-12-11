@@ -8,7 +8,7 @@ import java.math.BigInteger;
 public class GstClient {
 
     public double calc(String currency) {
-        String sRMI = "rmi://localhost:1099/gst";        
+        String sRMI = "rmi://192.168.43.15:1099/gst";        
         try {      
           GstSuper gst = (GstSuper) Naming.lookup(sRMI);
           double gstRate = gst.getGSTrate(currency);
@@ -26,11 +26,11 @@ public class GstClient {
         } 
         return 0.0;
     }
-  public static void main(String args[]) {
-    String sRMI = "rmi://localhost:1099/gst";        
+  /*public static void main(String args[]) {
+    String sRMI = "rmi://192.168.43.15:1099/gst";        
     try {      
       GstSuper gst = (GstSuper) Naming.lookup(sRMI);
-      double gstRate = gst.getGSTrate("myr");
+      double gstRate = gst.getGSTrate("MYR");
       System.out.println("The rate is : " + gstRate);
     }
     catch (MalformedURLException ex) {
@@ -42,5 +42,5 @@ public class GstClient {
     catch (NotBoundException ex) {
       System.err.println("Could not find the requested remote object on the server");
     } 
-  }
+  }*/
 }

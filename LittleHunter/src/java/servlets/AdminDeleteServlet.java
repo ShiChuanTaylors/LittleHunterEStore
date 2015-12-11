@@ -8,14 +8,14 @@ import cart.*;
 import exception.*;
 
 public class AdminDeleteServlet extends HttpServlet {
-    private BookDBAO bookDB;
+    private ShirtDBAO shirtDB;
     @Override
     public void init() throws ServletException {
-        bookDB = (BookDBAO) getServletContext().getAttribute("bookDB");
-        if (bookDB == null) throw new UnavailableException("Couldn't get database.");
+        shirtDB = (ShirtDBAO) getServletContext().getAttribute("shirtDB");
+        if (shirtDB == null) throw new UnavailableException("Couldn't get database.");
     }
     @Override
-    public void destroy() {bookDB = null;}
+    public void destroy() {shirtDB = null;}
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -25,12 +25,12 @@ public class AdminDeleteServlet extends HttpServlet {
         response.setBufferSize(8192);
         String contextPath = request.getContextPath();
         PrintWriter out = response.getWriter();
-        out.println("<html><head><title>Book Catalog</title></head><body>");
+        out.println(BannerServlet.htmlHeader);
         getServletContext().getRequestDispatcher("/Banner").include(request, response);
         String bookId = request.getParameter("Id");
         if (bookId != null) {
             try {
-                if(bookDB.deleteBook(bookId))
+                if(shirtDB.deleteBook(bookId))
                   out.println("<p><h3><font color='red'>You deleted Book with ID=<i>" + bookId +
                           "</i></font></h3>");
                   else
@@ -44,17 +44,17 @@ public class AdminDeleteServlet extends HttpServlet {
         //Give the option of checking cart or checking out if cart not empty
         if (cart.getNumberOfItems() > 0) {
             out.println("<p><strong><a href='" +
-                response.encodeURL(contextPath+ "/BookShowCart") +
+                response.encodeURL(contextPath+ "/ShirtShowCart") +
                 "'>Check Shopping Cart</a>&nbsp;&nbsp;&nbsp;<a href='" +
-                response.encodeURL(contextPath+ "/BookCashier")+"'>Buy Your Books</a></p></strong>");
+                response.encodeURL(contextPath+ "/ShirtCashier")+"'>Buy Your Books</a></p></strong>");
         }
         // Always prompt the user to buy more -- get and show the catalog
-        out.println("<h3>Please choose book to delete:</h3><center><table border='1' summary='layout'>");
+        out.println("<h3>Please choose shirt to delete:</h3><center><table border='1' summary='layout'>");
         try {
-            Collection coll = bookDB.getBooks();
+            Collection coll = shirtDB.getBooks();
             Iterator i = coll.iterator();
             while (i.hasNext()) {
-                BookDetails book = (BookDetails) i.next();
+                ShirtDetails book = (ShirtDetails) i.next();
                 bookId = book.getId();
                 //Print out info on each book in its own two rows
                 out.println("<tr><td bgcolor='#ffffaa'><strong>"+book.getShirtName()+"&nbsp;</strong></td>" +

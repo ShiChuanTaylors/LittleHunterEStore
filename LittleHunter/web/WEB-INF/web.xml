@@ -3,39 +3,39 @@
     <display-name>Litttle Hunter</display-name>
     <listener>
         <description>ServletContextListener</description>
-        <listener-class>AmazonContextListener</listener-class>
+        <listener-class>LittleHunterContextListener</listener-class>
     </listener>
     <listener>
         <description>HttpSessionListener</description>
-        <listener-class>AmazonSessionListener</listener-class>
+        <listener-class>LittleHunterSessionListener</listener-class>
     </listener>
     <servlet>
-        <servlet-name>BookStoreServlet</servlet-name>
-        <servlet-class>servlets.BookStoreServlet</servlet-class>
+        <servlet-name>ShirtStoreServlet</servlet-name>
+        <servlet-class>servlets.ShirtStoreServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>BannerServlet</servlet-name>
         <servlet-class>servlets.BannerServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>BookDetailsServlet</servlet-name>
-        <servlet-class>servlets.BookDetailsServlet</servlet-class>
+        <servlet-name>ShirtDetailsServlet</servlet-name>
+        <servlet-class>servlets.ShirtDetailsServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>BookCatalogServlet</servlet-name>
-        <servlet-class>servlets.BookCatalogServlet</servlet-class>
+        <servlet-name>ShirtCatalogServlet</servlet-name>
+        <servlet-class>servlets.ShirtCatalogServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>BookShowCartServlet</servlet-name>
-        <servlet-class>servlets.BookShowCartServlet</servlet-class>
+        <servlet-name>ShirtShowCartServlet</servlet-name>
+        <servlet-class>servlets.ShirtShowCartServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>BookCashierServlet</servlet-name>
-        <servlet-class>servlets.BookCashierServlet</servlet-class>
+        <servlet-name>ShirtCashierServlet</servlet-name>
+        <servlet-class>servlets.ShirtCashierServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>BookReceiptServlet</servlet-name>
-        <servlet-class>servlets.BookReceiptServlet</servlet-class>
+        <servlet-name>ShirtReceiptServlet</servlet-name>
+        <servlet-class>servlets.ShirtReceiptServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminServlet</servlet-name>
@@ -47,7 +47,7 @@
     </servlet>
     <servlet>
         <servlet-name>AdminBookEntryServlet</servlet-name>
-        <servlet-class>servlets.AdminBookEntryServlet</servlet-class>
+        <servlet-class>servlets.AdminShirtEntryServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminUpdateServlet</servlet-name>
@@ -70,24 +70,24 @@
         <url-pattern>/Banner</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BookDetailsServlet</servlet-name>
-        <url-pattern>/BookDetails</url-pattern>
+        <servlet-name>ShirtDetailsServlet</servlet-name>
+        <url-pattern>/ShirtDetails</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BookCatalogServlet</servlet-name>
-        <url-pattern>/BookCatalog</url-pattern>
+        <servlet-name>ShirtCatalogServlet</servlet-name>
+        <url-pattern>/ShirtCatalog</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BookShowCartServlet</servlet-name>
-        <url-pattern>/BookShowCart</url-pattern>
+        <servlet-name>ShirtShowCartServlet</servlet-name>
+        <url-pattern>/ShirtShowCart</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BookCashierServlet</servlet-name>
-        <url-pattern>/BookCashier</url-pattern>
+        <servlet-name>ShirtCashierServlet</servlet-name>
+        <url-pattern>/ShirtCashier</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BookReceiptServlet</servlet-name>
-        <url-pattern>/BookReceipt</url-pattern>
+        <servlet-name>ShirtReceiptServlet</servlet-name>
+        <url-pattern>/ShirtReceipt</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminServlet</servlet-name>
@@ -115,8 +115,8 @@
         <url-pattern>*.gif</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>BookStoreServlet</servlet-name>
-        <url-pattern>/Bookstore</url-pattern>
+        <servlet-name>ShirtStoreServlet</servlet-name>
+        <url-pattern>/ShirtStore</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CurrencyExServlet</servlet-name>
@@ -165,7 +165,7 @@
     <security-constraint>
         <display-name>AdminConstraint</display-name>
         <web-resource-collection>
-            <web-resource-name>Bookstore</web-resource-name>
+            <web-resource-name>ShirtStore</web-resource-name>
             <description/>
             <url-pattern>/Admin</url-pattern>
             <http-method>GET</http-method>
@@ -186,15 +186,15 @@
         <realm-name>File</realm-name>
     </login-config>
     <security-role>
-        <description>The bookstore manager</description>
+        <description>The ShirtStore manager</description>
         <role-name>Manager</role-name>
     </security-role>
     <security-role>
-        <description>Bookstore Staff</description>
+        <description>ShirtStore Staff</description>
         <role-name>Staff</role-name>
     </security-role>
     <resource-ref>
-        <res-ref-name>jdbc/BookDB</res-ref-name>
+        <res-ref-name>jdbc/shirtDB</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>

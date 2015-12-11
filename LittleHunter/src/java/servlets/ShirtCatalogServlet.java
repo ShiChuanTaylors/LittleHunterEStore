@@ -7,16 +7,16 @@ import database.*;
 import cart.*;
 import exception.*;
 
-public class BookCatalogServlet extends HttpServlet {
+public class ShirtCatalogServlet extends HttpServlet {
     
-    private BookDBAO bookDB;
+    private ShirtDBAO shirtDB;
     @Override
     public void init() throws ServletException {
-        bookDB = (BookDBAO) getServletContext().getAttribute("bookDB");
-        if (bookDB == null) throw new UnavailableException("Couldn't get database.");
+        shirtDB = (ShirtDBAO) getServletContext().getAttribute("shirtDB");
+        if (shirtDB == null) throw new UnavailableException("Couldn't get database.");
     }
     @Override
-    public void destroy() {bookDB = null;}
+    public void destroy() {shirtDB = null;}
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -32,7 +32,7 @@ public class BookCatalogServlet extends HttpServlet {
         String bookId = request.getParameter("Id");
         if (bookId != null) {
             try {
-                BookDetails book = bookDB.getBookDetails(bookId);
+                ShirtDetails book = shirtDB.getShirtDetails(bookId);
                 cart.add(bookId, book);
                 out.println("<script>\n" +
                     "      function toastNotification(){\n" +
@@ -51,21 +51,21 @@ public class BookCatalogServlet extends HttpServlet {
         //Give the option of checking cart or checking out if cart not empty
         if (cart.getNumberOfItems() > 0) {
             out.println("<div ><p class=\"col s12 m6\"><a href='" +
-                response.encodeURL(contextPath+ "/BookShowCart") +
+                response.encodeURL(contextPath+ "/ShirtShowCart") +
                 "' class=\"btn-large waves-effect waves-light teal lighten-1\">"
                     + "Check Shopping Cart</a>&nbsp;&nbsp;&nbsp;<a href='" +
-                response.encodeURL(contextPath+ "/BookCashier")+"'class=\"btn-large waves-effect waves-light teal lighten-1\">"
+                response.encodeURL(contextPath+ "/ShirtCashier")+"'class=\"btn-large waves-effect waves-light teal lighten-1\">"
                     + "Purchase Shirts</a></p></div>");
         }
         // Always prompt the user to buy more -- get and show the catalog
         out.println("<h1 class=\"header center teal-text text-lighten-2\">Our Store</h1>");
         
        //try {
-            Collection coll = bookDB.getBooks();
+            Collection coll = shirtDB.getBooks();
             Iterator i = coll.iterator();
             out.println(" <div class=\"row\" id=\"catalog\">\n");
             while (i.hasNext()) {
-                BookDetails book = (BookDetails) i.next();
+                ShirtDetails book = (ShirtDetails) i.next();
                 bookId = book.getId();
                 //Print out info on each book in its own two rows
                
@@ -74,15 +74,17 @@ public class BookCatalogServlet extends HttpServlet {
 "          <div class=\"card\">\n" +
 "            <div class=\"card-image\">\n" +
 "              <img src=\"images/" + book.getImageUrl() +"\">\n" +
-"              <span class=\"card-title\" style=\"text-align:center; font-size: 1.3em;\"><a href='" +
-                    response.encodeURL(contextPath+"/BookDetails?Id=" + bookId) + 
-                    "' class=\"white-text\">" +book.getShirtName()+"&nbsp;</a></span>\n" +
 "            </div>" +
-                    "<div class=\"card-content\"><p>"
-                    + "Price: RM&nbsp;&nbsp;" + "<span class=\"price\">" + book.getPrice() + "</span>" +
-                    "<br/>" + book.getDescription() + "</em> </p></div>\n" +
+        
+                    "<div class=\"card-content\"><p>" +
+        "              <span class=\"card-title\" style=\"text-align:center; color:black; font-size: 1.3em;\"><a href='" +
+                    response.encodeURL(contextPath+"/ShirtDetails?Id=" + bookId) + 
+                    "' class=\"teal-text\">" +book.getShirtName()+"&nbsp;</a></span>\n" 
+                    + "<br/><br/>Price: RM&nbsp;&nbsp;" + "<span class=\"price\">" + book.getPrice() + "</span>" +
+                    "<br/>" + book.getDescription() + "</em><br/><br/></p> " +
+        "<p>Inventory:&nbsp;&nbsp;" + "<span class=\"price\">" + book.getInventory()+ "</span>" + "&nbsp;qty</p></div>\n" +
 "           <div class=\"card-action\">  <a href='" +
-                    response.encodeURL(contextPath+"/BookCatalog?Id=" + bookId) + 
+                    response.encodeURL(contextPath+"/ShirtCatalog?Id=" + bookId) + 
                     "'  class=\"waves-effect waves-light lighten-1\">&nbsp;Add to Cart&nbsp;</a></div></div>\n" +
 "        </div>\n");
             }

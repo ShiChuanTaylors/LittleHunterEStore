@@ -5,15 +5,15 @@ import javax.servlet.http.*;
 import cart.ShoppingCart;
 import database.*;
 
-public class BookReceiptServlet extends HttpServlet {
-    private BookDBAO bookDB;
+public class ShirtReceiptServlet extends HttpServlet {
+    private ShirtDBAO shirtDB;
     @Override
     public void init() throws ServletException {
-        bookDB = (BookDBAO) getServletContext().getAttribute("bookDB");
-        if (bookDB == null)  throw new UnavailableException("Couldn't get database.");
+        shirtDB = (ShirtDBAO) getServletContext().getAttribute("shirtDB");
+        if (shirtDB == null)  throw new UnavailableException("Couldn't get database.");
     }
     @Override
-    public void destroy() { bookDB = null;}
+    public void destroy() { shirtDB = null;}
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -25,7 +25,7 @@ public class BookReceiptServlet extends HttpServlet {
         orderCompleted = false;
         // Update the inventory
         //try {
-            bookDB.buyBooks(cart);
+            shirtDB.buyBooks(cart);
         //} catch (OrderException e) {
         //    System.err.println(e.getMessage());
         //    orderCompleted = false;
@@ -45,12 +45,12 @@ public class BookReceiptServlet extends HttpServlet {
         getServletContext().getRequestDispatcher("/Banner").include(request, response);
 
         if (orderCompleted) {
-            out.println("<h3>"+request.getParameter("cardname")+"Thank you for purchasing your books from us.");
+            out.println("<h3>"+request.getParameter("cardname")+", <br/>Thank you for purchasing your shirts from us.");
         } else {
             out.println("<h3>Your order could not be completed due to insufficient inventory.");
         }
-        out.println("<p><strong><a href='" +response.encodeURL(contextPath+ "/Bookstore")+
-                "'>Continue Shopping</a> &nbsp; &nbsp; &nbsp;</body></html>");
+        out.println("<p><a href='" +response.encodeURL(contextPath+ "/ShirtCatalog")+
+                "' class=\"btn-large waves-effect waves-light teal lighten-1\">Continue Shopping</a> &nbsp; &nbsp; &nbsp;</body></html>");
         out.close();
     }
     @Override

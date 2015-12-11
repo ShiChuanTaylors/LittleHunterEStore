@@ -5,15 +5,23 @@ import javax.naming.*;
 import java.util.*;
 import exception.*;
 import cart.*;
-public class BookDBAO {
+public class ShirtDBAO {
     private ArrayList shirts;
     Connection con;
     private boolean conFree = true;
-    public BookDBAO() throws Exception {
+    public int ID = 1, 
+            SHIRT_NAME = 2,
+            PRICE = 3,
+            INVENTORY = 4,
+            IMAGE_URL = 5,
+            DESCRIPTION = 6;
+    
+    
+    public ShirtDBAO() throws Exception {
         try {
             Context initCtx = new InitialContext();
             Context envCtx = (Context) initCtx.lookup("java:comp/env");
-            DataSource ds = (DataSource) envCtx.lookup("jdbc/BookDB");
+            DataSource ds = (DataSource) envCtx.lookup("jdbc/shirtDB");
             con = ds.getConnection();
         } catch (Exception ex) {
             throw new Exception("Couldn't open connection to database: " +ex.getMessage());
@@ -25,7 +33,6 @@ public class BookDBAO {
     protected synchronized Connection getConnection() {
         while (conFree == false) {
             try { wait(); } catch (InterruptedException e) {
-                System.out.println("------2------");
             }
         }
         conFree = false;
@@ -40,19 +47,19 @@ public class BookDBAO {
         notify();
     }
     public List getBooks() throws BooksNotFoundException {
-        System.out.print("-----3--------");
+        
         shirts = new ArrayList();
-        System.out.print("-----4--------");
+        
         int inventory = 0;
         try {
             getConnection();
             PreparedStatement prepStmt = con.prepareStatement("select * from shirts");
-            System.out.print("-----1--------");
+            
             ResultSet rs = prepStmt.executeQuery();
             while (rs.next()) {
                 inventory = rs.getInt(4);
                 if (rs.getInt(4) > 0) {
-                    shirts.add(new BookDetails(rs.getString(1), rs.getString(2),
+                    shirts.add(new ShirtDetails(rs.getString(1), rs.getString(2),
                             rs.getFloat(3), rs.getInt(4), rs.getString(5),rs.getString(6)));
                 }
             }
@@ -68,14 +75,14 @@ public class BookDBAO {
         Collections.sort(shirts);
         return shirts;
     }
-    public BookDetails getBookDetails(String bookId)throws BookNotFoundException {
+    public ShirtDetails getShirtDetails(String shirtId)throws BookNotFoundException {
         try {
             getConnection();
             PreparedStatement prepStmt = con.prepareStatement("select * from shirts where id = ? ");
-            prepStmt.setString(1, bookId);
+            prepStmt.setString(1, shirtId);
             ResultSet rs = prepStmt.executeQuery();
             if (rs.next()) {
-                BookDetails bd = new BookDetails(rs.getString(1), rs.getString(2),
+                ShirtDetails bd = new ShirtDetails(rs.getString(1), rs.getString(2),
                             rs.getFloat(3), rs.getInt(4), rs.getString(5),rs.getString(6));
                 //prepStmt.close();
                 releaseConnection();
@@ -83,39 +90,39 @@ public class BookDBAO {
             } else {
                 //prepStmt.close();
                 releaseConnection();
-                throw new BookNotFoundException("Couldn't find book: " +bookId);
+                throw new BookNotFoundException("Couldn't find book: " +shirtId);
             }
         } catch (SQLException ex) {
             releaseConnection();
-            throw new BookNotFoundException("Couldn't find book: " + bookId +" " + ex.getMessage());
+            throw new BookNotFoundException("Couldn't find book: " + shirtId +" " + ex.getMessage());
         }
     }
-    public boolean deleteBook(String bookId)throws BookNotFoundException {
+    public boolean deleteBook(String shirtId)throws BookNotFoundException {
         try {
             getConnection();
             PreparedStatement prepStmt = con.prepareStatement("Delete from shirts where id = ? ");
-            prepStmt.setString(1, bookId);
+            prepStmt.setString(1, shirtId);
             prepStmt.executeUpdate();
             releaseConnection();
             return true;
         } catch (SQLException ex) {
             releaseConnection();
-            throw new BookNotFoundException("Couldn't delete book: " + bookId +" " + ex.getMessage());
+            throw new BookNotFoundException("Couldn't delete book: " + shirtId +" " + ex.getMessage());
         }
     }
-    public boolean addBook(String id, String title, String author,
-        float price, int year,String description, int inventory)
+    public boolean addBook(String id, String t_name,
+        float price, int inventory, String img_URL, String description)
             throws NewBookException{
         try {
             getConnection();
-            PreparedStatement prepStmt = con.prepareStatement("INSERT INTO shirts VALUES(?,?,?,?,?,?,?)");
+            PreparedStatement prepStmt = con.prepareStatement("INSERT INTO shirts VALUES(?,?,?,?,?,?)");
             prepStmt.setString(1,id);
-            prepStmt.setString(2,title);
-            prepStmt.setString(3,author);
-            prepStmt.setFloat(4,price);
-            prepStmt.setInt(5,year);
+            prepStmt.setString(2,t_name);
+            prepStmt.setFloat(3,price);
+            prepStmt.setInt(4,inventory);
+            prepStmt.setString(5,img_URL);
             prepStmt.setString(6,description);
-            prepStmt.setInt(7,inventory);
+            
             prepStmt.executeUpdate();
             releaseConnection();
             return true;
@@ -132,7 +139,7 @@ public class BookDBAO {
             con.setAutoCommit(false);
             while (i.hasNext()) {
                 ShoppingCartItem sci = (ShoppingCartItem) i.next();
-                BookDetails bd = (BookDetails) sci.getItem();
+                ShirtDetails bd = (ShirtDetails) sci.getItem();
                 String id = bd.getId();
                 buyBook(id, sci.getQuantity());
             }
@@ -149,24 +156,24 @@ public class BookDBAO {
             finally{ releaseConnection();}
         }
     }
-    private void buyBook(String bookId, int quantity) throws OrderException {
+    private void buyBook(String shirtId, int quantity) throws OrderException {
         try {
             PreparedStatement prepStmt = con.prepareStatement("select * from shirts where id = ? ");
-            prepStmt.setString(1, bookId);
+            prepStmt.setString(1, shirtId);
             ResultSet rs = prepStmt.executeQuery();
             if (rs.next()) {
-                int inventory = rs.getInt(7);
+                int inventory = rs.getInt(INVENTORY);
                 //prepStmt.close();
                 if ((inventory - quantity) >= 0) {
                     prepStmt = con.prepareStatement("Update shirts set inventory = inventory - ? where id = ?");
                     prepStmt.setInt(1, quantity);
-                    prepStmt.setString(2, bookId);
+                    prepStmt.setString(2, shirtId);
                     prepStmt.executeUpdate();
                     //prepStmt.close();
-                } else  throw new OrderException("Not enough of " + bookId +" in stock to complete order.");
+                } else  throw new OrderException("Not enough of " + shirtId +" in stock to complete order.");
             }
         } catch (Exception ex) {
-            throw new OrderException("Couldn't purchase book: " + bookId + ex.getMessage());
+            throw new OrderException("Couldn't purchase book: " + shirtId + ex.getMessage());
         }
     }
 }

@@ -6,15 +6,15 @@ import database.*;
 //import cart.*;
 //import exception.*;
 
-public class AdminBookEntryServlet extends HttpServlet {
-    private BookDBAO bookDB;
+public class AdminShirtEntryServlet extends HttpServlet {
+    private ShirtDBAO shirtDB;
     @Override
     public void init() throws ServletException {
-        bookDB = (BookDBAO) getServletContext().getAttribute("bookDB");
-        if (bookDB == null) throw new UnavailableException("Couldn't get database.");
+        shirtDB = (ShirtDBAO) getServletContext().getAttribute("shirtDB");
+        if (shirtDB == null) throw new UnavailableException("Couldn't get database.");
     }
     @Override
-    public void destroy() {bookDB = null;}
+    public void destroy() {shirtDB = null;}
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -92,7 +92,7 @@ public class AdminBookEntryServlet extends HttpServlet {
         }
         String sId=getParamWithoutNull(request,"Id");
         String sTitle=getParamWithoutNull(request,"Title");
-        String sAuthor=getParamWithoutNull(request,"Author");
+        String sImgUrl=getParamWithoutNull(request,"Author");
         String sPrice=getParamWithoutNull(request,"Price");
         String sYear=getParamWithoutNull(request,"Year");
         String sDescription=getParamWithoutNull(request,"Description");
@@ -100,7 +100,7 @@ public class AdminBookEntryServlet extends HttpServlet {
 
         String sIdErr="";
         String sTitleErr="";
-        String sAuthorErr="";
+        String sImgUrlErr="";
         String sPriceErr="";
         String sYearErr="";
         String sDescriptionErr="";
@@ -110,10 +110,10 @@ public class AdminBookEntryServlet extends HttpServlet {
  
         if(sOperation.equals("")){
           if(sMode.equals("Update")){
-            BookDetails bd=bookDB.getBookDetails(request.getParameter("ID"));
+            ShirtDetails bd=shirtDB.getShirtDetails(request.getParameter("ID"));
             sId=bd.getId();
             sTitle=bd.getShirtName();
-            sAuthor=bd.getImageUrl();
+            sImgUrl=bd.getImageUrl();
             sPrice=""+bd.getPrice();
             sDescription=bd.getDescription();
             sInventory=""+bd.getInventory();
@@ -123,15 +123,15 @@ public class AdminBookEntryServlet extends HttpServlet {
           if(sMode.equals("Update")) sId = getParamWithoutNull(request,"ID");
           sIdErr=validateId(sId);
           sTitleErr=validateTitle(sTitle);
-          sAuthorErr=validateAuthor(sAuthor);
+          sImgUrlErr=validateAuthor(sImgUrl);
           sPriceErr=validatePrice(sPrice);
           sYearErr=validateYear(sYear);
           sDescriptionErr=validateDescription(sDescription);
           sInventoryErr=validateInventory(sInventory);
-          if((sIdErr+sTitleErr+sAuthorErr+sPriceErr+sYearErr+sDescriptionErr+sInventoryErr).equals("")){
+          if((sIdErr+sTitleErr+sImgUrlErr+sPriceErr+sYearErr+sDescriptionErr+sInventoryErr).equals("")){
             if(sMode.equals("New")){
               if(sOperation.equals("Add")){
-                bookDB.addBook(sId,sTitle,sAuthor,Float.parseFloat(sPrice),Integer.parseInt(sYear),sDescription,Integer.parseInt(sInventory));
+                shirtDB.addBook(sId,sTitle,Float.parseFloat(sPrice),Integer.parseInt(sInventory),sImgUrl,sDescription);
                 response.sendRedirect(contextPath+"/Admin");
                 return;
               }
@@ -139,8 +139,8 @@ public class AdminBookEntryServlet extends HttpServlet {
             else{
               if(sMode.equals("Update")){
                 if(sOperation.equals("Update")){
-                  bookDB.deleteBook(sId);
-                  bookDB.addBook(sId,sTitle,sAuthor,Float.parseFloat(sPrice),Integer.parseInt(sYear),sDescription,Integer.parseInt(sInventory));
+                  shirtDB.deleteBook(sId);
+                  shirtDB.addBook(sId,sTitle,Float.parseFloat(sPrice),Integer.parseInt(sInventory),sImgUrl,sDescription);
                   response.sendRedirect(contextPath+"/AdminUpdate");
                   return;
                 }             
@@ -203,7 +203,7 @@ public class AdminBookEntryServlet extends HttpServlet {
             "       <tr><th><img src='images/books.jpg'/></th><th colspan=3' bgcolor='green'><h2>"+sHeader+" Entry</h2></th></tr>"+
             "       <tr><td rowspan='8' bgcolor='black'>&nbsp;</td><td title='Not more than 4 characters'>ID</td><td bgcolor='red'>&nbsp;</td><td><input type='text' name='Id' value='"+sId+"' size='4'"+(sMode.equals("Update")?" disabled='disabled'":"")+"'/>"+sIdErr+"</td></tr>"+
             "       <tr><td  title='Not more that 64 characters'>TITLE</td><td bgcolor='red'>&nbsp;</td><td><input type='text' name='Title' value='"+sTitle+"' size='64' />"+sTitleErr+"</td></tr>"+
-            "       <tr><td  title='Not more that 32 characters'>AUTHOR</td><td bgcolor='red'>&nbsp;</td><td><input type='text' name='Author' value='"+sAuthor+"' size='32' />"+sAuthorErr+"</td></tr>"+
+            "       <tr><td  title='Not more that 32 characters'>AUTHOR</td><td bgcolor='red'>&nbsp;</td><td><input type='text' name='Author' value='"+sImgUrl+"' size='32' />"+sImgUrlErr+"</td></tr>"+
             "       <tr><td>PRICE</td><td bgcolor='red'>&nbsp;</td><td><input type='text' name='Price' value='"+sPrice+"' />"+sPriceErr+"</td></tr>"+
             "       <tr><td>YEAR</td><td bgcolor='red'>&nbsp;</td><td><input type='text' name='Year' value='"+sYear+"' size='4' />"+sYearErr+"</td></tr>"+
             "       <tr><td colspan='2' title='Not more that 128 characters'>DESC.</td><td><textarea name='Description' rows='3' cols='40'>"+sDescription+"</textarea>"+sDescriptionErr+"</td></tr>"+

@@ -6,8 +6,8 @@
     <group-name>User</group-name>
   </security-role-mapping>
   <resource-ref>
-    <res-ref-name>jdbc/BookDB</res-ref-name>
-    <jndi-name>jdbc/BookDB</jndi-name>
+    <res-ref-name>jdbc/shirtDB</res-ref-name>
+    <jndi-name>jdbc/shirtDB</jndi-name>
   </resource-ref>
   <class-loader delegate="true"/>
   <jsp-config>

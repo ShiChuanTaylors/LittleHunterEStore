@@ -4,15 +4,15 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import database.*;
 import exception.*;
-public class BookDetailsServlet extends HttpServlet {
-    private BookDBAO bookDB;
+public class ShirtDetailsServlet extends HttpServlet {
+    private ShirtDBAO shirtDB;
     @Override
     public void init() throws ServletException {
-        bookDB = (BookDBAO) getServletContext().getAttribute("bookDB");
-        if (bookDB == null) throw new UnavailableException("Couldn't get database.");
+        shirtDB = (ShirtDBAO) getServletContext().getAttribute("shirtDB");
+        if (shirtDB == null) throw new UnavailableException("Couldn't get database.");
     }
     @Override
-    public void destroy() {bookDB = null;}
+    public void destroy() {shirtDB = null;}
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -25,7 +25,7 @@ public class BookDetailsServlet extends HttpServlet {
         getServletContext().getRequestDispatcher("/Banner").include(request, response);
         if (shirtId != null) {
             try {
-                BookDetails ts = bookDB.getBookDetails(shirtId);
+                ShirtDetails ts = shirtDB.getShirtDetails(shirtId);
                 out.println("<br/>"+
                     "<table class=\"striped\" border='1'>"+
                     "<thead><tr><th colspan='2'>T-Shirt Details</th><tr></thead>"+
@@ -35,7 +35,7 @@ public class BookDetailsServlet extends HttpServlet {
                     "<tr><td>Price</td><td>MYR&nbsp;"+ts.getPrice()+"</td></tr></table>");
             // Go back to catalog
             out.println("<p> &nbsp; <p><a href='" +
-                response.encodeURL(request.getContextPath() + "/BookCatalog") +
+                response.encodeURL(request.getContextPath() + "/ShirtCatalog") +
                 "' class=\"btn-large waves-effect waves-light teal lighten-1\">Continue Shopping</a>" );                
             } catch (BookNotFoundException ex) {
                 out.println("<center><h1>T-shirt Not Found</h1></center>");

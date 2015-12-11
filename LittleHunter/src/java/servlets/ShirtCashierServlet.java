@@ -1,11 +1,12 @@
 package servlets;
 
+import RMIgst.GstClient;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import cart.*;
 
-public class BookCashierServlet extends HttpServlet {
+public class ShirtCashierServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
@@ -19,12 +20,15 @@ public class BookCashierServlet extends HttpServlet {
         getServletContext().getRequestDispatcher("/Banner").include(request, response);
          // Go back to catalog
          out.println("<p> &nbsp; <p><a href='" +response.encodeURL(
-                 contextPath+"/BookCatalog") +"' class=\"btn-large waves-effect waves-light teal lighten-1\">Back to Catalog</a>" );                
+                 contextPath+"/ShirtCatalog") +"' class=\"btn-large waves-effect waves-light teal lighten-1\">Back to Catalog</a>" );                
 
+         /* RMI to check if gst rate is needed to display */
+        double gstRate = 0;
+        gstRate = new GstClient().calc(cart.getMoneySymbol());
         // Print out the total and the form for the user
         out.println("<p>Your total purchase amount is:<strong>"+ cart.getMoneySymbol() + "&nbsp;" +
-            String.format("%.2f",cart.getTotal() * cart.getCurrencyExRate()) + "<p>To purchase the items in your shopping cart, please provide us with the following information:<form action='" +
-            response.encodeURL(contextPath+ "/BookReceipt") +
+            String.format("%.2f",cart.getTotal() * cart.getCurrencyExRate()* (gstRate + 1)) + "<p>To purchase the items in your shopping cart, please provide us with the following information:<form action='" +
+            response.encodeURL(contextPath+ "/ShirtReceipt") +
             "' method='post'><table class=\"striped\" summary='layout'><tr>" +
             "<td><strong>Name:</strong></td>" +
             "<td><input type='text' name='cardname'" +

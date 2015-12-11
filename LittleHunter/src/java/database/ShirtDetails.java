@@ -1,13 +1,13 @@
 package database;
-public class BookDetails implements Comparable {
+public class ShirtDetails implements Comparable {
     private String id=null;         //id            varchar(10)
     private String t_name=null;      //t_name         varchar(64)
     private String image_url=null;     //image_url        varchar(120)
     private float price=0.0F;       //price         float
     private String description=null;//description   varchar(1200)
     private int inventory=0;        //inventory     int
-    public BookDetails() {}
-    public BookDetails(String id, String t_name, 
+    public ShirtDetails() {}
+    public ShirtDetails(String id, String t_name, 
         float price, int inventory, String image_url, String description) {
         this.id = id;
         this.t_name = t_name;
@@ -30,6 +30,6 @@ public class BookDetails implements Comparable {
     public void setDescription(String description) {this.description = description; }
     public void setInventory(int inventory) {this.inventory = inventory;}
     public int compareTo(Object o) {
-        return t_name.compareTo(((BookDetails) o).t_name);
+        return t_name.compareTo(((ShirtDetails) o).t_name);
     }
 }

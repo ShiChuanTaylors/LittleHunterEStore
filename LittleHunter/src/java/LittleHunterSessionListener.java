@@ -2,7 +2,7 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import cart.*;
 
-public class AmazonSessionListener implements HttpSessionListener {
+public class LittleHunterSessionListener implements HttpSessionListener {
     
     //public static GstClient gc; 
     

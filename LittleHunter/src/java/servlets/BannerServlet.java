@@ -42,7 +42,7 @@ public class BannerServlet extends HttpServlet {
                 
             "<nav class=\"white\" role=\"navigation\">\n" +
 "    <div class=\"nav-wrapper container\">\n" +
-"        <a href='"+response.encodeURL(path)+"'><img src=\"images/logo_lh.png\" style=\"width:18%;\" alt=\"Little Hunter\"/></a>\n" +
+"        <a href='"+response.encodeURL(path)+"'><img src=\"images/logo_lh.png\" style=\"height:90%; padding:3px;\" alt=\"Little Hunter\"/></a>\n" +
 "      <ul class=\"right hide-on-med-and-down\">\n" +
 "        <li><a href='"+response.encodeURL(path +"/Admin")+"'>Admin</a></li>\n" +
 "      </ul>\n" +
