@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://192.168.43.15:58526/CurrencyExWS/CurrencyExWS?wsdl" uri="wsdl/192.168.43.15_58526/CurrencyExWS/CurrencyExWS.wsdl"/>
+    <system systemId="http://192.168.43.15:58526/CurrencyExWS/CurrencyExWS?xsd=1" uri="wsdl/192.168.43.15_58526/CurrencyExWS/CurrencyExWS.xsd_1.xsd"/>
+</catalog>
